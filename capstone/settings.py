@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 from celery.schedules import crontab
 from pathlib import Path
+import os
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -26,7 +27,8 @@ SECRET_KEY = 'django-insecure-@26_f*ss0bh96r@qoszd!grv$_58em20h9p+n6w7noq&6_n61s
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+ 
 ALLOWED_HOSTS = [
     'web-production-f8b86.up.railway.app',
     'localhost',
@@ -47,10 +49,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_celery_beat',
+    'whitenoise.runserver_nostatic',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -151,4 +155,6 @@ CELERY_BEAT_SCHEDULE = {
 }
 
 broker_connection_retry_on_startup = True
+
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
