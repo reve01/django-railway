@@ -109,11 +109,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'es-es'
 
-TIME_ZONE = 'America/santiago'
+
+TIME_ZONE = 'America/Santiago'
+USE_TZ = True
+
 
 USE_I18N = True
 
-USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
