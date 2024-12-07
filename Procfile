@@ -1,1 +1,1 @@
-web: gunicorn capstone.wsgi:application
+web: python server.py
