@@ -1,0 +1,32 @@
+{% extends 'booking/layout.html' %}
+
+{% block body %}
+<main class="container register main-pad">
+    {% if messages %}
+        {% for message in messages %}
+        <div class="message">{{message}}</div>
+        {% endfor %}
+    {% endif %}
+    <h2>Registrarse</h2>
+    <form class="register-form" action="{% url 'register' %}" method="post">
+        {% csrf_token %}    
+        <label class="span2">Nombre de usuario
+        <input class="form__field" autofocus type="text" name="username" required></label>
+        <label>Nombre
+            <input class="form__field" type="text" name="first_name"></label>
+        <label>Apellido
+            <input class="form__field" type="text" name="last_name"></label>
+        <label>Correo electrónico
+            <input class="form__field" type="email" name="email"> </label>
+        <label>Teléfono
+            <input class="form__field" type="phone" name="phone" placeholder="5691234567"></label>
+        <label>Contraseña
+            <input class="form__field" type="password" name="password" required></label>
+        <label>Confirmar contraseña
+            <input class="form__field" type="password" name="confirmation" required></label>
+            
+        <input class="btn" type="submit" value="Registrarse">
+    </form>
+</main>
+
+{% endblock %}

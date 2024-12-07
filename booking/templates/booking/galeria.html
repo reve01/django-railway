@@ -1,0 +1,44 @@
+{% extends 'booking/layout.html' %}
+{% load static %}
+
+{% block body %}
+
+<div class="container display-flex" >
+    <div class="row width=100%">
+        {% for galeria in page_obj %}
+            <div class="col-md-4 mb-4">
+                <div class="card" style="width: 18rem;">
+                    <img src="{{ galeria.image.url }}" class="card-img-top" height="300px" width="250px" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ galeria.title }}</h5>
+                        <p class="card-text">{{ galeria.description }} {{ galeria.created }}</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    
+   
+  
+</div>
+
+<div class="row">
+    <div class="col d-flex justify-content-center">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page=1">Primera</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a></li>
+                {% endif %}
+
+                {% if page_obj.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Ultima</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>
+
+{% endblock body %}

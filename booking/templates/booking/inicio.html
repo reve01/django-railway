@@ -1,0 +1,73 @@
+{% extends 'booking/layout.html' %}
+{% load static %}
+
+{% block titulo %}Inicio - Peluquería Canina{% endblock %}
+
+{% block body %}
+<div class="inicio-content">
+    <div class="logo-grande">
+        <img src="{% static 'booking/imagenes/logo.png' %}" alt="Logo Peluquería Canina">
+    </div>
+
+    <div class="h1">
+        <h1>Bienvenido a Patitas de Oso</h1>
+        <h1>Tu Peluquería Canina</h1>
+    </div>
+
+    <div class="foto_ad">
+        <img src="{% static 'booking/imagenes/antes-despues.png' %}" alt="Antes y Despues">
+    </div>
+
+    <div class="h1">
+        <h1>QUIENES SOMOS</h1>
+    </div>
+
+    <div class="bloques">
+        <div class="bloque-izquierdo">
+            <img src="{% static 'booking/imagenes/diplomas.jpeg' %}" alt="Quienes somos">
+        </div>
+        <div class="bloque-derecho">
+            <p>
+                Somos una peluquería canina dedicada al cuidado y bienestar de tus mascotas. Con años de experiencia, 
+                nos comprometemos a brindar el mejor servicio, asegurándonos de que cada mascota reciba el cariño y atención que merece.
+            </p>
+        </div>
+    </div>
+
+    <div class="h1">
+        <h1>¿Cómo Agendar?</h1>
+    </div>
+
+    <div class="bloques">
+        <div class="bloque-derecho">
+            <p>
+                Primer paso:
+                <br>
+                Iniciar Sesión. Haz clic en el botón de "Inicio de Sesión" que se encuentra en la parte superior 
+                derecha de la página (junto a la patita), o haz clic en el botón de abajo que te llevará hasta allí.
+            </p>
+            <a href="#inicioSesion" class="boton-patita">
+                <img src="{% static 'booking/imagenes/icons8-huella-de-perro-96.png' %}" alt="Patita" width="30px">
+                Iniciar Sesión
+            </a>
+        </div>
+        <div class="bloque-derecho">
+            <p>
+                Segundo paso:
+                <br>
+                Registro o Ingreso. Serás dirigido a una página donde deberás ingresar tus datos y los de tu mascota si aún 
+                no estás registrado. Si ya tienes una cuenta, simplemente ingresa tu usuario y contraseña para iniciar sesión.
+            </p>
+        </div>
+        <div class="bloque-derecho">
+            <p>
+                Tercer paso:
+                <br>
+                Agendar Cita. Una vez iniciada la sesión, busca y presiona el botón 
+                "Agendar su próxima hora" para completar el proceso de reserva.
+            </p>
+        </div>
+    </div>
+    
+</div>
+{% endblock body %}
