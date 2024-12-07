@@ -1,1 +1,1 @@
-web: gunicorn capstone.wsgipip
+web: gunicorn capstone.wsgi:application
