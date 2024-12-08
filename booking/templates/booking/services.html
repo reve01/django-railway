@@ -1,14 +1,16 @@
 {% extends 'booking/layout.html' %} 
 
 {% block body %}
+
+  <h2 class="titulo_services">Servicios de Peluquería Canina</h2>
 <main class="services main-margin">
   <section class="container main-pad">
     
-    <h2 class="center">Servicios de Peluquería Canina</h2>
-    <div class="services__items flex">
+
+    <div class="flex">
     <div class="services_item center">
       <h3>Peluquería Express</h3>
-      <p>desde <span class="services_price">$60</span></p>
+      <p>desde <span class="services_price services_block">$60</span></p>
       <p class="services__dog-type">Perros pequeños $60 - $85</p>
       <p class="services__dog-type">Perros medianos $85 - $100</p>
       <p class="services__dog-type">Perros grandes $100 - $125</p>
@@ -59,10 +61,9 @@
     </div>
     
     </div>
-    <a href="{% url 'booking' %}"><button class="btn service__btn lg-screen">Reservar ahora</button></a>
 </section>
 <hr class="container">
-<section class="container main-pad">
+<section class="servicios_adicionales container main-pad">
     <h2>Servicios Adicionales</h2>
     <ul class="flex add-on">
         <li>Cepillado de dientes</li>

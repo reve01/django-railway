@@ -1,14 +1,15 @@
 {% extends 'booking/layout.html' %}
 
 {% block body %}
-<main class="container register main-pad">
+<main class="login container register main-pad">
     {% if messages %}
         {% for message in messages %}
         <div class="message">{{message}}</div>
         {% endfor %}
     {% endif %}
-    <h2>Registrarse</h2>
+
     <form class="register-form" action="{% url 'register' %}" method="post">
+    <h2>Registrarse</h2>    
         {% csrf_token %}    
         <label class="span2">Nombre de usuario
         <input class="form__field" autofocus type="text" name="username" required></label>
