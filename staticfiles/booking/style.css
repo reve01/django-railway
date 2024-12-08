@@ -17,10 +17,6 @@
   margin: 1em 0;
 }
 
-.center {
-  text-align: center;
-}
-
 
 .errorlist {
   background: var(--clr-secondary);
@@ -143,6 +139,7 @@ footer {
 .login {
   display: flex;
   align-items: center;
+  justify-content: center; /* Centra horizontalmente */
 }
 
 .login img {
@@ -561,7 +558,7 @@ textarea {
     min-height: 120px;
   }
 }
-
+login
 /* info section */
 
 .info {
@@ -609,19 +606,30 @@ td {
 
 /* LOGIN & REGISTER*/
 
+.seccion_login{
+  background-color: #f09394;
+  padding: 50px;
+  display: grid;
+  border-radius: 20px;
+  align-items: center;
+}
+
 .register-form {
+  background-color: #f09394;
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: 1em;
   align-items: center;
   max-width: 70%;
+  padding: 20px;
+  border-radius: 20px;
 }
 
 .register-form > label > input {
   border-radius: 5px;
   border-color: var(--clr-shadow);
 }
-
+center
 .span2 {
   grid-column: 1/ -1;
 }
@@ -654,6 +662,16 @@ td {
 
 /* Services */
 
+.titulo_services {
+  left: 50%;
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: rgb(0, 0, 0);
+  font-size: 50px;
+  text-align: center;
+  z-index: 1000; /* Asegura que el título quede encima de otros elementos */
+}
+
 .services__items {
   margin: 1.5em 0;
   --gap: 2em;
@@ -670,6 +688,8 @@ td {
   width: 100%;
   padding: 1em 0.5em 2em;
   position: relative;
+  background-color: #f09394;
+  border-radius: 20px;
 }
 
 .services_item::before {
@@ -686,7 +706,6 @@ td {
 }
 
 .services_item > h3 {
-  font-family: "Kalam", cursive;
   text-transform: uppercase;
   letter-spacing: -1px;
   line-height: 1;
@@ -740,6 +759,10 @@ td {
 
 .add-on > li {
   width: 48%;
+}
+
+.servicios_adicionales {
+  background-color: #f093948b;
 }
 
 @media (max-width: 700px) {
