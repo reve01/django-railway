@@ -29,11 +29,11 @@ from django.core.paginator import Paginator
 
 
 def inicio(request):
-        # Only show comments that are approved by staff and get 10 of them randomly (if there are more than 10)
+    # Mostrar solo comentarios aprobados por el staff y obtener 10 aleatoriamente (si hay más de 10)
     comments = Comment.objects.filter(
         approved=True).order_by('?')[:10]
 
-    # Add new comment
+    # Agregar un nuevo comentario
     if request.method == "POST":
         data = json.loads(request.body)
         comment = data["comment"]
@@ -42,12 +42,12 @@ def inicio(request):
 
         if user is None:
             return JsonResponse({
-                "message": "Login Required"
+                "message": "Inicio de sesión requerido"
             }, status=403)
 
         Comment.objects.create(user=user, content=comment)
         return JsonResponse({
-            "message": "Thank you for your comment!"
+            "message": "¡Gracias por tu comentario!"
         }, status=200)
 
     else:
@@ -55,17 +55,17 @@ def inicio(request):
 
 # Vista para la página de contacto
 def contacto(request):
-    return render(request, 'booking/contacto.html')  # Rendeiza la plantilla 'contacto.html'
+    return render(request, 'booking/contacto.html')  # Renderiza la plantilla 'contacto.html'
 
 # Vista para la página de servicios
 def servicios(request):
-    return render(request, 'booking/servicios.html')  # Rendeiza la plantilla 'servicios.html'
+    return render(request, 'booking/servicios.html')  # Renderiza la plantilla 'servicios.html'
 
 # Vista para procesar el formulario de contacto (vacío en este caso)
 def enviar_contacto(request):
     if request.method == 'POST':  # Si la solicitud es POST, procesar los datos del formulario
         pass  # Aquí iría la lógica para procesar el formulario
-    return render(request, 'booking/contacto.html')  # Rendeiza de nuevo la plantilla 'contacto.html'
+    return render(request, 'booking/contacto.html')  # Renderiza de nuevo la plantilla 'contacto.html'
 
 def galeria(request):
     galerias = Galeria.objects.all()
@@ -73,9 +73,7 @@ def galeria(request):
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
     return render(request, "booking/galeria.html", {"page_obj": page_obj})
-   
 
-# Create your views here.
 
 
 
@@ -86,12 +84,12 @@ def services(request):
 def login_view(request):
     if request.method == "POST":
         next = request.POST['next']
-        # Attempt to sign user in
+        # Intentar iniciar sesión del usuario
         username = request.POST["username"]
         password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
         
-        # Check if authentication successful
+        # Verificar si la autenticación fue exitosa
         if user is not None:
             login(request, user)
             if next == "":
@@ -100,7 +98,7 @@ def login_view(request):
                 return HttpResponseRedirect(next)
 
         else:
-            messages.error(request, "Invalid username and/or password.")
+            messages.error(request, "Nombre de usuario y/o contraseña inválidos.")
             return render(request, "booking/login.html", {
                 'next': next,
             })
@@ -120,32 +118,32 @@ def register(request):
         first_name = request.POST["first_name"]
         last_name = request.POST["last_name"]
         phone = request.POST["phone"]
-        # Ensure password matches confirmation
+        # Asegurarse de que las contraseñas coincidan
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
         if password != confirmation:
-            messages.error(request, "Passwords do not match.")
+            messages.error(request, "Las contraseñas no coinciden.")
             return HttpResponseRedirect(reverse("register"))
             
         elif first_name == "" or last_name == "":
-            messages.error(request, "Please fill in your name.")
+            messages.error(request, "Por favor, completa tu nombre.")
             return HttpResponseRedirect(reverse("register"))
         
         elif password == "":
-            messages.error(request, "Please input a password.")
+            messages.error(request, "Por favor, ingresa una contraseña.")
             return HttpResponseRedirect(reverse("register"))
 
         elif len(password) < 6:
             messages.error(
-                request, "Password must contain at least 6 characters.")
+                request, "La contraseña debe contener al menos 6 caracteres.")
             return HttpResponseRedirect(reverse("register"))
 
-        if phone and (len(phone) != 10 or not phone.isnumeric()):
+        if phone and (len(phone) != 11 or not phone.isnumeric()):
             messages.error(
-                request, "Phone number invalid. Must be 10 digits and in format: 9051234567")
+                request, "Número de teléfono inválido. Debe tener 11 dígitos y estar en el formato: 9051234567")
             return HttpResponseRedirect(reverse("register"))
 
-        # Attempt to create new user
+        # Intentar crear un nuevo usuario
         try:
             user = User.objects.create_user(username, email, password)
             user.first_name = first_name
@@ -156,12 +154,13 @@ def register(request):
 
         except IntegrityError:
             messages.error(
-                request, "Username already taken.")
+                request, "El nombre de usuario ya está en uso.")
             return HttpResponseRedirect(reverse("register"))
         login(request, user)
         return HttpResponseRedirect(reverse("profile"))
     else:
         return render(request, 'booking/register.html')
+
 
 
 
@@ -214,7 +213,7 @@ def profile(request):
                 owner.save()
                 return HttpResponse(status=204)
             else:
-                return JsonResponse({"message": "Phone number should have 10 digits and numbers only."}, status=400)
+                return JsonResponse({"message": "El número de teléfono debe tener 10 dígitos y solo números."}, status=400)
         elif field == 'email':
             if '@' in value:
                 user = User.objects.get(username=request.user)
@@ -222,7 +221,7 @@ def profile(request):
                 user.save()
                 return HttpResponse(status=204)
             else:
-                return JsonResponse({"message": "Please input a valid email"}, status=400)
+                return JsonResponse({"message": "Por favor, introduce un correo electrónico válido."}, status=400)
 
     else:
         bookform = AppointmentForm()
@@ -239,10 +238,8 @@ def profile(request):
         })
 
 
-
 @login_required(login_url='/login')
 def change_password(request):
-
     if request.method == "POST":
         old_password = request.POST["old_password"]
         new_password = request.POST["new_password"]
@@ -250,27 +247,27 @@ def change_password(request):
         user_record = User.objects.get(username=request.user)
         if len(new_password) < 6:
             messages.error(
-                request, 'Password must contain at least 6 characters.')
+                request, 'La contraseña debe contener al menos 6 caracteres.')
             return HttpResponseRedirect(reverse('changepassword'))
         elif new_password != confirmation:
             messages.error(
-                request, 'New password and confirmation do not match.')
+                request, 'La nueva contraseña y la confirmación no coinciden.')
             return HttpResponseRedirect(reverse('changepassword'))
 
         elif old_password == new_password:
             messages.error(
-                request, 'Old and new passwords cannot be the same.')
+                request, 'La contraseña antigua y la nueva no pueden ser iguales.')
             return HttpResponseRedirect(reverse('changepassword'))
 
         if old_password and new_password and (new_password == confirmation) and (old_password != new_password):
             if user_record.check_password(old_password):
                 user_record.set_password(new_password)
                 user_record.save()
-                messages.success(request, 'Password has been updated, please login with your new password.')
+                messages.success(request, 'La contraseña se ha actualizado, por favor inicia sesión con tu nueva contraseña.')
                 return HttpResponseRedirect(reverse('login'))
             else:
                 messages.error(
-                    request, 'Old password is incorrect.')
+                    request, 'La contraseña antigua es incorrecta.')
                 return HttpResponseRedirect(reverse('changepassword'))
 
     else:
@@ -283,7 +280,7 @@ def booking(request):
     # Obtener notificaciones no leídas
     notifications = Notification.objects.filter(user=request.user, is_read=False)
     
-    # preview slot table
+    # Vista previa de la tabla de horarios
     today = datetime.today().date()
     # Obtiene la fecha actual del sistema.
 
@@ -299,7 +296,7 @@ def booking(request):
 
     for date in date_list:
         if date.weekday() == 7:
-            slot_dict[date] = 'Closed'
+            slot_dict[date] = 'Cerrado'
         else:
             time_list = [10, 13, 15]
             # Define una lista con los posibles horarios para las citas (10 AM, 1 PM, 3 PM).
@@ -315,10 +312,9 @@ def booking(request):
                 # Marca la hora como 'None' si está ocupada o si ha pasado en el día actual.
 
             slot_dict[date] = [t for t in time_list if t is not None]
-           
             # Asigna los horarios disponibles para cada fecha, eliminando los que están ocupados o pasados.
 
-    # users should only be able to choose the pets they own
+    # Los usuarios solo pueden elegir las mascotas que poseen
     bookform = AppointmentForm()
     # Crea una instancia del formulario de cita.
 
@@ -364,7 +360,7 @@ def booking(request):
                     "form": bookform,
                     "petform": PetForm(),
                     "date_list": slot_dict,
-                    "notifications": notifications,  # Añade las notificaciones aquí
+                    "notifications": notifications,
                 })
                 # Renderiza la plantilla de reservas con el formulario de citas, el formulario de mascotas y las fechas disponibles.
 
@@ -383,14 +379,14 @@ def booking(request):
                                    date_of_birth=date_of_birth, breed=breed)
                 # Crea una nueva mascota en la base de datos.
 
-                messages.success(request, f"{name} is added successfully")
+                messages.success(request, f"{name} se añadió correctamente.")
                 # Muestra un mensaje de éxito informando que la mascota se ha añadido correctamente.
 
                 return render(request, 'booking/booking.html', {
                     "form": bookform,
                     "petform": PetForm(),
                     "date_list": slot_dict,
-                    "notifications": notifications,  # Añade las notificaciones aquí
+                    "notifications": notifications,
                 })
                 # Renderiza la plantilla de reservas después de agregar la mascota.
 
@@ -399,7 +395,7 @@ def booking(request):
                     "form": bookform,
                     "petform": petform,
                     "date_list": slot_dict,
-                    "notifications": notifications,  # Añade las notificaciones aquí
+                    "notifications": notifications,
                 })
                 # Renderiza la plantilla con el formulario de citas, el formulario de mascotas y las fechas disponibles, pero con errores en el formulario de mascota.
 
@@ -408,155 +404,136 @@ def booking(request):
             "form": bookform,
             "petform": PetForm(),
             "date_list": slot_dict,
-            "notifications": notifications,  # Añade las notificaciones aquí
+            "notifications": notifications,
         })
         # Renderiza la plantilla de reservas con los formularios de cita y mascota vacíos y las fechas disponibles.
 
 
 
 
-@login_required(login_url='/login')
-# Decora la vista para asegurar que solo los usuarios autenticados puedan acceder a ella. Si no están logueados, serán redirigidos a la página de login.
 
+# Asegura que solo los usuarios autenticados puedan acceder a la vista. Redirige al usuario no autenticado a la página de inicio de sesión.
+@login_required(login_url='/login')  
 def appointment(request, id):
     try:
+        # Intenta obtener la cita con el ID proporcionado.
         appointment = Appointment.objects.get(pk=id)
-        # Intenta obtener la cita con el ID especificado. Si no existe, se lanza una excepción.
     except Appointment.DoesNotExist:
-        return JsonResponse({"error": "Record not found."}, status=404)
-        # Si no se encuentra la cita, devuelve un error 404 (no encontrado) con un mensaje de error.
+        # Si la cita no existe, devuelve un error 404 con un mensaje.
+        return JsonResponse({"error": "Registro no encontrado."}, status=404)
 
+    # Obtiene el objeto Owner relacionado con el usuario autenticado.
     owner = Owner.objects.get(user=request.user)
-    # Obtiene el objeto 'Owner' correspondiente al usuario actual, que es el dueño de una mascota o de la cita.
 
+    # Comprueba si el usuario actual es el propietario de la cita.
     if owner.id == appointment.user.id:
-        # Verifica si el usuario que hace la solicitud es el propietario de la cita. Si no es así, devuelve un error 403 (prohibido).
-
-        # Si el método de la solicitud es DELETE, se desea cancelar la cita.
-        if request.method == "DELETE":
-            if owner.id == appointment.user.id:
-                # Verifica nuevamente que el usuario es el propietario de la cita antes de eliminarla.
-                data = json.loads(request.body)
-                # Carga el cuerpo de la solicitud para obtener los datos en formato JSON.
+        if request.method == "DELETE":  # Comprueba si la solicitud es un intento de eliminar la cita.
+            if owner.id == appointment.user.id:  # Verifica nuevamente la autorización.
+                # Convierte el cuerpo de la solicitud en un objeto JSON.
+                data = json.loads(request.body)  
                 id = data["id"]
-                # Extrae el ID de la cita desde los datos cargados.
-
-                appointment.delete()
                 # Elimina la cita de la base de datos.
+                appointment.delete()
+                # Devuelve un código de estado 204 para indicar que la operación fue exitosa pero sin contenido.
                 return HttpResponse(status=204)
-                # Devuelve una respuesta vacía con el código de estado 204, que indica que la operación fue exitosa pero no hay contenido.
             else:
-                return JsonResponse({'error': 'You can only delete your own appointments'}, status=403)
-                # Si el usuario no es el propietario de la cita, se devuelve un error 403 (prohibido).
+                # Devuelve un error si el usuario no tiene permiso para eliminar la cita.
+                return JsonResponse({'error': 'Solo puedes eliminar tus propias citas'}, status=403)
 
-        # Si el método de la solicitud es PUT, se desea editar la cita.
-        elif request.method == 'PUT':
-            data = json.loads(request.body)
-            # Carga el cuerpo de la solicitud para obtener los datos en formato JSON.
+        elif request.method == 'PUT':  # Comprueba si la solicitud es para actualizar la cita.
+            # Convierte el cuerpo de la solicitud en un objeto JSON.
+            data = json.loads(request.body)  
+            # Convierte la fecha recibida en una fecha válida.
             date = datetime.strptime(data['date'], '%Y-%m-%d').date()
-            # Convierte la fecha de la cita (que se recibe como string) en un objeto de tipo fecha (datetime.date).
+            # Obtiene la hora de la solicitud.
             time = data["time"]
-            # Extrae la hora de la cita desde los datos.
+            # Obtiene el ID del perro relacionado con la cita.
             dog = data["dog"]
-            # Extrae el ID del perro asociado a la cita.
 
+            # Comprueba si la fecha y hora son en el pasado.
             if date < datetime.today().date() or (date == datetime.today().date() and time < str(datetime.now().hour)):
-                return JsonResponse({'error': 'Cannot change to a time slot in the past'}, status=400)
-                # Verifica que la nueva fecha y hora no sean en el pasado. Si lo son, devuelve un error 400 (solicitud incorrecta).
+                return JsonResponse({'error': 'No se puede cambiar a un horario pasado'}, status=400)
 
+            # Comprueba si el día es lunes (cerrado).
             elif date.weekday() == 0:
-                return JsonResponse({'error': 'Sorry, we are closed on Monday'}, status=400)
-                # Verifica si la cita es para un lunes (día 0 de la semana), ya que la tienda está cerrada ese día. Devuelve un error si es el caso.
+                return JsonResponse({'error': 'Lo sentimos, estamos cerrados los lunes'}, status=400)
 
-            # Verifica si el cliente está intentando cambiar la fecha y hora de la cita
+            # Comprueba si ya existe una cita para la misma fecha y hora.
             available = Appointment.objects.filter(
                 date=date, time=time).exclude(id=id)
-            # Consulta si ya existe una cita en la misma fecha y hora, excluyendo la cita actual (si la está editando).
 
-            if available.count() == 0:
-                # Si no hay citas en la misma fecha y hora, se puede proceder con la actualización.
-                appointment.dog = Pet.objects.get(pk=dog)
-                # Asocia el perro correspondiente a la cita.
-                appointment.service = data["service"]
-                # Actualiza el servicio solicitado en la cita.
-                appointment.add_ons = data["add_ons"]
-                # Actualiza los complementos de la cita.
-                appointment.date = date
-                # Actualiza la fecha de la cita.
-                appointment.time = time
-                # Actualiza la hora de la cita.
-                appointment.save()
-                # Guarda los cambios en la base de datos.
-
+            if available.count() == 0:  # Si no hay conflictos de horario, se procede a actualizar la cita.
+                appointment.dog = Pet.objects.get(pk=dog)  # Asigna el nuevo perro a la cita.
+                appointment.service = data["service"]  # Actualiza el servicio de la cita.
+                appointment.add_ons = data["add_ons"]  # Actualiza los complementos.
+                appointment.date = date  # Actualiza la fecha.
+                appointment.time = time  # Actualiza la hora.
+                appointment.save()  # Guarda los cambios en la base de datos.
+                # Devuelve un código de estado 200 para indicar que la operación fue exitosa.
                 return HttpResponse(status=200)
-                # Devuelve una respuesta vacía con el código de estado 200, que indica que la operación fue exitosa.
-
             else:
-                return JsonResponse({'error': 'Time slot taken'}, status=400)
-                # Si ya existe una cita en la misma fecha y hora, devuelve un error 400 (solicitud incorrecta).
+                # Devuelve un error si el horario ya está ocupado.
+                return JsonResponse({'error': 'Horario ya ocupado'}, status=400)
 
-        # Si el método de la solicitud es GET, se desea obtener los detalles de la cita.
         else:
+            # Si la solicitud no es DELETE ni PUT, devuelve los detalles de la cita.
             return JsonResponse(appointment.serialize())
-            # Devuelve los detalles de la cita en formato JSON usando el método `serialize` del modelo `Appointment`.
-
     else:
-        return JsonResponse({'error': 'This is not your appointment'}, status=403)
-        # Si el usuario que realiza la solicitud no es el propietario de la cita, devuelve un error 403 (prohibido).
+        # Si el usuario no es el propietario de la cita, devuelve un error.
+        return JsonResponse({'error': 'Esta no es tu cita'}, status=403)
 
 
 
-
+# Asegura que solo los usuarios autenticados puedan acceder a la vista.
 @login_required(login_url='/login')
-# Decora la vista para asegurar que solo los usuarios autenticados puedan acceder a ella.
 def schedule(request, start, move):
-    today = datetime.today().date()
-    # Obtiene la fecha actual del sistema.
+    today = datetime.today().date()  # Obtiene la fecha de hoy.
 
-    if move == 'next':
-        # Si el parámetro `move` es 'next', quiere avanzar una semana.
+    if move == 'next':  # Si el usuario intenta avanzar una semana.
         if (start + timedelta(days=7) - today).days / 7 >= 5:
-            # Verifica si la nueva fecha está más allá de 5 semanas desde hoy.
+            # Si la fecha está más allá de 5 semanas, devuelve un error.
             return JsonResponse({"message": "La vista previa y la reserva solo están disponibles para fechas dentro de 5 semanas."}, status=400)
-            # Si está fuera de las 5 semanas, devuelve un error con un mensaje.
         else:
+            # Avanza la fecha en 7 días.
             start = start + timedelta(days=7)
-            # Si la fecha es válida, suma 7 días a la fecha de inicio.
+            # Carga los horarios disponibles.
             slot_dict = load_preview_dict(start)
-            # Carga un diccionario con los slots disponibles a partir de la nueva fecha.
+            # Devuelve los horarios en formato JSON.
             return JsonResponse({"slot_dict": slot_dict}, status=200)
-            # Devuelve los slots disponibles como una respuesta JSON.
 
-    elif move == 'prev':
-        # Si el parámetro `move` es 'prev', quiere retroceder una semana.
+    elif move == 'prev':  # Si el usuario intenta retroceder una semana.
         if start <= today:
-            # Si la fecha de inicio es hoy o en el pasado, no se puede mostrar.
+            # No se permite ver fechas pasadas.
             return JsonResponse({"message": "No se puede ver una fecha pasada."}, status=400)
-            # Devuelve un error si se intenta retroceder a una fecha pasada.
         else:
+            # Retrocede la fecha en 7 días.
             start = start - timedelta(days=7)
-            # Si es válido, resta 7 días a la fecha de inicio.
+            # Carga los horarios disponibles.
             slot_dict = load_preview_dict(start)
-            # Carga los slots disponibles a partir de la nueva fecha.
+            # Devuelve los horarios en formato JSON.
             return JsonResponse({"slot_dict": slot_dict}, status=200)
-            # Devuelve los slots disponibles como una respuesta JSON.
 
     else:
+        # Si la solicitud no es válida, devuelve un error.
         return JsonResponse({"message": "Solicitud inválida"}, status=400)
-        # Si el parámetro `move` no es ni 'next' ni 'prev', devuelve un error indicando solicitud inválida.
 
 
-    
-
+# Permite marcar una notificación como leída. No requiere autenticación CSRF.
 @csrf_exempt
 def mark_notification_read(request, notification_id):
     try:
+        # Intenta obtener la notificación relacionada con el usuario.
         notification = Notification.objects.get(id=notification_id, user=request.user)
+        # Marca la notificación como leída.
         notification.is_read = True
+        # Guarda los cambios en la base de datos.
         notification.save()
-        return JsonResponse({"message": "Notification marked as read.", "reload": True}, status=200)
+        # Devuelve una respuesta exitosa.
+        return JsonResponse({"message": "Notificación marcada como leída.", "reload": True}, status=200)
     except Notification.DoesNotExist:
-        return JsonResponse({"error": "Notification not found."}, status=404)
+        # Devuelve un error si no se encuentra la notificación.
+        return JsonResponse({"error": "Notificación no encontrada."}, status=404)
+
 
 
 
