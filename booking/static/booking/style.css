@@ -18,6 +18,35 @@
   margin: 0;
 }
 
+.container1 {
+  display: flex;
+  justify-content: space-between; /* Espacia los elementos entre los bordes del contenedor */
+  align-items: center; /* Alinea verticalmente los elementos en el centro */
+  padding: 0 20px;
+}
+
+.header-left1 {
+  display: flex;
+  align-items: center;
+}
+
+.logo1 {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-left: -20px;
+}
+
+.header-right1 {
+  display: flex;
+  align-items: center;
+}
+
+.login1 {
+  display: flex;
+  align-items: center;
+}
+
 .flex {
   display: flex;
   gap: var(--gap, 1em);
