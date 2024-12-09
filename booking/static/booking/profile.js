@@ -1,7 +1,5 @@
 import { getCookie } from "./script.js";
 
-
-
 // toggle add pet form
 const add_btn = document.querySelector(".add-pet");
 const pet_form = document.querySelector(".pet-form");
@@ -66,7 +64,7 @@ function updateField(edit_btn) {
 
   if (field.id === "phone") {
     field_value = field_value.replace(/\s|\(|\)|\-/g, ""); // remove the meta characters in the field
-    field.innerHTML = `<input type='tel' name='phone' pattern='[0-9]{11}' value='${field_value}' autofocus> <button class="btn save-btn">Save</button>`;
+    field.innerHTML = `<input type='tel' name='phone' pattern='[0-9]{10}' value='${field_value}' autofocus> <button class="btn save-btn">Save</button>`;
   } else {
     field.innerHTML = `<input type='email' name='email' value='${field_value}' autofocus>  <button class="btn save-btn">Save</button>`;
   }
@@ -342,41 +340,3 @@ function modalDisplay(element = "none") {
     setTimeout(() => location.reload(), 1500);
   }
 }
-
-
-document.addEventListener("DOMContentLoaded", function () {
-  // Obtener todos los botones de "Marcar como leída"
-  const markReadButtons = document.querySelectorAll(".mark-read-btn");
-
-  markReadButtons.forEach(button => {
-      button.addEventListener("click", function () {
-          const notificationId = button.getAttribute("data-id");
-
-          fetch(`/mark-notification-read/${notificationId}/`, {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-                  'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-              },
-              body: JSON.stringify({ notification_id: notificationId })
-          })
-          .then(response => response.json())
-          .then(data => {
-              if (data.message) {
-                  button.disabled = true;
-                  button.textContent = 'Marcada como leída';
-                  button.classList.add('disabled');
-
-                  // Recargar la página después de marcar la notificación como leída
-                  location.reload(); // Recarga la página
-              } else {
-                  alert('Error al marcar la notificación como leída');
-              }
-          })
-          .catch(error => {
-              console.error('Error:', error);
-          });
-      });
-  });
-});
-
