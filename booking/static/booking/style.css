@@ -30,11 +30,21 @@
   align-items: center;
 }
 
+.logo1 img {
+  width: 50px;
+  height: auto;
+}
+
 .logo1 {
   display: flex;
   align-items: center;
   gap: 20px;
   margin-left: -20px;
+}
+
+.logo1 h1 {
+  margin: 0;
+  font-size: 25px;
 }
 
 .header-right1 {
